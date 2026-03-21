@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(MapGenerator))]
+[CustomEditor(typeof(MapGenerator), true)]
 public class MapGeneratorEditor : Editor
 {
     public override void OnInspectorGUI()

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0f9a96dd576f1245ab11e2503af11df, type: 3}
   m_Name: Default_Map
   m_EditorClassIdentifier: Assembly-CSharp::MapGeneratorSO
-  walkLenght: 10
-  iterations: 10
+  walkLength: 15
+  iterations: 15
   startRandomlyEachIteration: 1
