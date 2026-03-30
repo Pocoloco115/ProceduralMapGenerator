@@ -24,25 +24,7 @@ public class MapGenerator : AbstractMapGenerator
         mapRenderer.Clear();
         HashSet<Vector2Int> floorPositions = RunRandomWalk(mapGeneratorSO, startPos);
         mapRenderer.PaintMap(floorPositions);
-        HashSet<Vector2Int> wallPositions = FindWallPositions(floorPositions);
-        mapRenderer.PaintWalls(wallPositions);
-    }
-    public HashSet<Vector2Int> FindWallPositions(HashSet<Vector2Int> positions)
-    {
-        HashSet<Vector2Int> wallPositions = new HashSet<Vector2Int>();
-
-        foreach (var direction in AlgorithmsManager.Directions)
-        {
-            foreach (var pos in positions)
-            {
-                Vector2Int newPos = pos + direction;
-                if (!positions.Contains(newPos))
-                {
-                    wallPositions.Add(newPos);
-                }
-            }
-        }
-        return wallPositions;
+        WallManager.GenerateWalls(floorPositions, mapRenderer);
     }
     protected HashSet<Vector2Int> RunRandomWalk(MapGeneratorSO parameters, Vector2Int pos)
     {
