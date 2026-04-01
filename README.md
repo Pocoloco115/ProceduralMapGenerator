@@ -168,7 +168,7 @@ Assets/
     │       └── (MapGeneratorSO and related data assets)
     ├── Game/
     │   ├── Abstractions/
-    │   │   └── (interfaces / base classes for generators)
+    │   │   └── (abstract classes / base classes for generators)
     │   ├── Algorithms/
     │   │   └── (Random Walk, Corridors, BSPRooms implementations)
     │   ├── Data/
