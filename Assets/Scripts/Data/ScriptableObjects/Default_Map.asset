@@ -13,5 +13,15 @@ MonoBehaviour:
   m_Name: Default_Map
   m_EditorClassIdentifier: Assembly-CSharp::MapGeneratorSO
   walkLength: 20
-  iterations: 20
+  iterations: 40
   startRandomlyEachIteration: 0
+  corridorLength: 20
+  corridorCount: 10
+  roomPercent: 1
+  corridorWideningMode: 0
+  dungeonWidth: 70
+  dungeonHeight: 70
+  minRoomWidth: 10
+  minRoomHeight: 10
+  offset: 2
+  randomWalkRooms: 0

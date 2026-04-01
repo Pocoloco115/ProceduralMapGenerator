@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class MapGenerator : AbstractMapGenerator
 {
-    [SerializeField] protected MapGeneratorSO mapGeneratorSO;
+    [SerializeField] protected MapGeneratorSO parameters;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,7 +22,7 @@ public class MapGenerator : AbstractMapGenerator
     public override void StartProceduralGeneration()
     {
         mapRenderer.Clear();
-        HashSet<Vector2Int> floorPositions = RunRandomWalk(mapGeneratorSO, startPos);
+        HashSet<Vector2Int> floorPositions = RunRandomWalk(parameters, startPos);
         mapRenderer.PaintMap(floorPositions);
         WallManager.GenerateWalls(floorPositions, mapRenderer);
     }

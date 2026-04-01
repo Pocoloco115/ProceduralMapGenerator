@@ -5,13 +5,6 @@ using Random = UnityEngine.Random;
 
 public class BSPRoomGenerator : MapGenerator
 {
-    [SerializeField] private int minRoomWidth = 5;
-    [SerializeField] private int minRoomHeight = 5;
-    [SerializeField] private int dungeonWidth = 20;
-    [SerializeField] private int dungeonHeight = 20;
-    [SerializeField][Range(0, 10)] private int offset = 1;
-    [SerializeField] private bool randomWalkRooms = false;
-
     public override void StartProceduralGeneration()
     {
         CreateRooms();
@@ -19,9 +12,24 @@ public class BSPRoomGenerator : MapGenerator
 
     private void CreateRooms()
     {
-        var rooms = AlgorithmsManager.BinarySpacePartition(new BoundsInt((Vector3Int)startPos, new Vector3Int(dungeonWidth, dungeonHeight, 0)), minRoomWidth, minRoomHeight);
+        var rooms = AlgorithmsManager.BinarySpacePartition(
+            new BoundsInt((Vector3Int)startPos,
+            new Vector3Int(parameters.dungeonWidth, parameters.dungeonHeight, 0)),
+            parameters.minRoomWidth,
+            parameters.minRoomHeight
+            );
+        if (rooms == null || rooms.Count == 0)
+        {
+            Debug.LogWarning(
+                $"[BSPRoomGenerator] BinarySpacePartition no generó rooms. " +
+                $"Dungeon=({parameters.dungeonWidth}x{parameters.dungeonHeight}), " +
+                $"MinRoom=({parameters.minRoomWidth}x{parameters.minRoomHeight})"
+            );
+            // Evitamos crash: no seguimos
+            return;
+        }
         HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
-        if(randomWalkRooms)
+        if(parameters.randomWalkRooms)
         {
             floor = CreateRandomWalkRooms(rooms);
         }
@@ -111,9 +119,9 @@ public class BSPRoomGenerator : MapGenerator
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
         foreach (var room in rooms)
         {
-            for (int col = offset; col < room.size.x - offset; col++)
+            for (int col = parameters.offset; col < room.size.x - parameters.offset; col++)
             {
-                for (int row = offset; row < room.size.y - offset; row++)
+                for (int row = parameters.offset; row < room.size.y - parameters.offset; row++)
                 {
                     floorPositions.Add((Vector2Int)room.min + new Vector2Int(col, row));
                 }
@@ -128,10 +136,10 @@ public class BSPRoomGenerator : MapGenerator
         {
             var room = rooms[i];
             var roomCenter = (Vector2Int)Vector3Int.RoundToInt(room.center);
-            var roomFloor = RunRandomWalk(mapGeneratorSO, roomCenter);
+            var roomFloor = RunRandomWalk(parameters, roomCenter);
             foreach(var pos in roomFloor)
             {
-                if (pos.x > room.min.x + offset && pos.x < room.max.x - offset && pos.y > room.min.y + offset && pos.y < room.max.y - offset)
+                if (pos.x > room.min.x + parameters.offset && pos.x < room.max.x - parameters.offset && pos.y > room.min.y + parameters.offset && pos.y < room.max.y - parameters.offset)
                 {
                     floorPositions.Add(pos);
                 }

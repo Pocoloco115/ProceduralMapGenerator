@@ -11,11 +11,6 @@ public class CorridorGenerator : MapGenerator
         IncreaseByOne,
         Include3x3
     }
-    [SerializeField] private int corridorLenght = 10;
-    [SerializeField] private int corridorCount = 5;
-    [SerializeField][Range(0.1f, 1f)] private float roomPercent = 0.4f;
-    [SerializeField] private CorridorWideningMode corridorWideningMode = CorridorWideningMode.None;
-
     public override void StartProceduralGeneration()
     {
         HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
@@ -28,9 +23,9 @@ public class CorridorGenerator : MapGenerator
 
         for(int i = 0; i < corridors.Count; i++)
         {
-            if(corridorWideningMode == CorridorWideningMode.None) continue;
-            if(corridorWideningMode == CorridorWideningMode.IncreaseByOne) corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
-            if(corridorWideningMode == CorridorWideningMode.Include3x3) corridors[i] = IncreaseCorridorsBrush3x3(corridors[i]);
+            if(parameters.corridorWideningMode == CorridorWideningMode.None) continue;
+            if(parameters.corridorWideningMode == CorridorWideningMode.IncreaseByOne) corridors[i] = IncreaseCorridorSizeByOne(corridors[i]);
+            if(parameters.corridorWideningMode == CorridorWideningMode.Include3x3) corridors[i] = IncreaseCorridorsBrush3x3(corridors[i]);
             floorPositions.UnionWith(corridors[i]);
         }
         mapRenderer.PaintMap(floorPositions);
@@ -99,7 +94,7 @@ public class CorridorGenerator : MapGenerator
         {
             if(!floorPositions.Contains(deadEnd))
             {
-                var roomFloor = RunRandomWalk(mapGeneratorSO, deadEnd);
+                var roomFloor = RunRandomWalk(parameters, deadEnd);
                 floorPositions.UnionWith(roomFloor);
             }
         }
@@ -128,12 +123,12 @@ public class CorridorGenerator : MapGenerator
     private HashSet<Vector2Int> GenerateRooms(HashSet<Vector2Int> roomPositions)
     {
         HashSet<Vector2Int> rooms = new HashSet<Vector2Int>();
-        int roomToCreateCount = Mathf.RoundToInt(roomPositions.Count * roomPercent);
+        int roomToCreateCount = Mathf.RoundToInt(roomPositions.Count * parameters.roomPercent);
         List<Vector2Int> roomsToCreate = roomPositions.OrderBy(x => Guid.NewGuid()).Take(roomToCreateCount).ToList();
         
         foreach(var roomPos in roomsToCreate)
         {
-            var roomFloor = RunRandomWalk(mapGeneratorSO, roomPos);
+            var roomFloor = RunRandomWalk(parameters, roomPos);
             rooms.UnionWith(roomFloor);
         }
         return rooms;
@@ -143,9 +138,9 @@ public class CorridorGenerator : MapGenerator
         Vector2Int currentPos = startPos;
         roomPositions.Add(currentPos);
         List<List<Vector2Int>> corridors = new List<List<Vector2Int>>();
-        for (int i = 0; i < corridorCount; i++)
+        for (int i = 0; i < parameters.corridorCount; i++)
         {
-            List<Vector2Int> path = AlgorithmsManager.RandomWalkCorridor(currentPos, corridorLenght);
+            List<Vector2Int> path = AlgorithmsManager.RandomWalkCorridor(currentPos, parameters.corridorLength);
             corridors.Add(path);
             currentPos = path[path.Count - 1];
             roomPositions.Add(currentPos);
