@@ -19,10 +19,9 @@ This is a procedural dungeon generator.
 
 Not a level editor.  
 Not a full game.  
-Not wizardry, even if it sometimes looks like it.
 
 It just generates maps at runtime.  
-By code.  
+By code I'm supposed to understand.  
 And somehow the code is still behaving.
 
 This project is one of my first “serious” procedural generation experiments in Unity. The goal is to build a base for grid-based dungeons with different algorithms and parameters you can poke until something breaks.
