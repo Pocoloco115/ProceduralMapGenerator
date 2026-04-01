@@ -1,4 +1,4 @@
-# 🎲 Procedural Dungeon Generator – Rogue-Lite Style Maps in Unity
+# Procedural Dungeon Generator — roguelite maps in Unity
 
 <div align="center">
   <img src="Media/gameplay.gif" alt="Game Preview" width="600"/>
@@ -15,148 +15,155 @@
 
 ---
 
-It’s a **procedural dungeon generator**.
+This is a procedural dungeon generator.
 
 Not a level editor.  
-Not a full game (yet).  
+Not a full game.  
+Not wizardry, even if it sometimes looks like it.
 
-Just maps.  
-Generated at runtime.  
-By code I actually understand (most days).
+It just generates maps at runtime.  
+By code.  
+And somehow the code is still behaving.
 
-This is one of my first “serious” procedural generation projects in Unity –  
-a toolkit to create **grid-based dungeons** with different algorithms and parameters.
-
----
-
-## 🗺️ What Is This?
-
-A small Unity project focused on **procedural 2D dungeon generation**, built around:
-
-- Different **generation algorithms** (map types)
-- A flexible **parameter UI** using `ScriptableObject`
-- Pixel-art style layouts meant for top-down / roguelike / rogue-lite games
-
-If you’ve ever played:
-
-- Any roguelike
-- Any “generate random dungeon” game
-
-You already know *why* this exists.
-
-This project is about **how** to build that kind of map system in Unity.
+This project is one of my first “serious” procedural generation experiments in Unity. The goal is to build a base for grid-based dungeons with different algorithms and parameters you can poke until something breaks.
 
 ---
 
-## 🧮 Map Types (a.k.a. Ways to Suffer Less Designing Levels)
+## What this is
 
-Currently supported map types:
+A small Unity project focused on procedural 2D dungeon generation, built around:
+
+- multiple generation algorithms
+- a flexible parameter UI using `ScriptableObject`
+- pixel-art style layouts for top-down, roguelike, and rogue-lite games
+
+If you’ve ever played a game where the map is generated on the fly and everyone pretends that was a carefully planned feature, you already get the idea.
+
+This project is about building that kind of system in Unity without turning the whole thing into a maintenance crime scene.
+
+---
+
+## Map types
+
+Right now it supports:
 
 - **Simple Random Walk**
-  - A noisy, organic layout
-  - Great for cave-like rooms and messy dungeons
+  - a noisy, organic layout
+  - good for cave-like dungeons and maps that look mildly unhinged
 
 - **Corridors**
-  - Random walks extended by straight-ish corridors
-  - Feels more like hallways connecting rooms
+  - random walks stretched into mostly straight corridors
+  - feels more like connected halls and rooms
 
 - **BSP Rooms**
-  - Binary Space Partitioning to carve out rooms and connect them
-  - A bit more “structured dungeon generator” style
+  - Binary Space Partitioning to split space, carve rooms, and connect them
+  - more structured, more “real dungeon,” less “I clicked randomly and it worked”
 
-Each type has its own parameter panel, so you can tweak it until it breaks. Then tweak it back.
-
----
-
-## 🎛 Parameter System (a.k.a. UI of Questionable Power)
-
-The core of the project is the **map parameter UI**, driven by `ScriptableObject`s:
-
-- `MapGeneratorSO` – holds all configurable values:
-  - Random walk:
-    - `walkLength`
-    - `iterations`
-    - `startRandomlyEachIteration`
-  - Corridors:
-    - `corridorLength`
-    - `corridorCount`
-    - `roomPercent`
-    - `corridorWideningMode`
-  - BSP Rooms:
-    - `dungeonWidth`, `dungeonHeight`
-    - `minRoomWidth`, `minRoomHeight`
-    - `offset`
-    - `randomWalkRooms`
-
-- `MapParametersUI` – binds UI ↔ parameters:
-  - Uses **TMP_InputField**, **Slider**, **Toggle**, **Dropdown**
-  - Shows only the relevant panels depending on the map type:
-    - Simple
-    - Corridors
-    - BSP Rooms
-  - Two modes:
-    - **Default mode** → uses predefined `defaultParameters`
-    - **Custom mode** → lets you edit `customParameters` with full control
-
-Validation is included so that:
-
-- If your inputs are invalid (e.g. `minRoomWidth > dungeonWidth`, offsets absurdos…):
-  - It **shows a warning animation** 
-  - It **does not apply** the bad values to the ScriptableObject
-  - And you can prevent map generation when validation fails
+Each map type has its own parameter panel, so you can tune the values until the map stops looking like an accident and starts looking like a deliberate one.
 
 ---
 
-## ▶️ How to Use
+## Parameter system
 
-You’ve got two options:
+The core of the project is the map parameter UI, driven by `ScriptableObject`.
 
-### 1. Just Play with It (Build Release)
+### `MapGeneratorSO`
+This holds all configurable values:
 
-1. Go to the **Releases** section of this repository.
+- Random Walk:
+  - `walkLength`
+  - `iterations`
+  - `startRandomlyEachIteration`
+
+- Corridors:
+  - `corridorLength`
+  - `corridorCount`
+  - `roomPercent`
+  - `corridorWideningMode`
+
+- BSP Rooms:
+  - `dungeonWidth`, `dungeonHeight`
+  - `minRoomWidth`, `minRoomHeight`
+  - `offset`
+  - `randomWalkRooms`
+
+### `MapParametersUI`
+This connects the UI to the parameters:
+
+- uses `TMP_InputField`, `Slider`, `Toggle`, and `Dropdown`
+- shows only the relevant panel depending on the selected map type:
+  - Simple
+  - Corridors
+  - BSP Rooms
+- has two modes:
+  - **Default mode**: uses `defaultParameters`
+  - **Custom mode**: lets you edit `customParameters` directly and make your own problems
+
+Validation is included to stop obviously cursed input like:
+
+- `minRoomWidth > dungeonWidth`
+- absurd offsets
+- values that look like they came from a machine trying to guess numbers
+
+If something is invalid:
+
+- a warning animation appears
+- the bad values are not applied to the `ScriptableObject`
+- generation is blocked until the input stops being nonsense
+
+---
+
+## How to use it
+
+You have two options.
+
+### 1. Just run the build
+
+1. Go to the Releases section of this repository.
 2. Download the latest build for your platform.
-3. Unzip and run the executable.
-4. Pick a **map type** and tweak some parameters.
-5. Spam the **Generate** button until you get:
-   - a layout you love, or
-   - a layout you absolutely hate (but still kinda want to keep).
+3. Unzip it and run the executable.
+4. Pick a map type and tweak some parameters.
+5. Press **Generate** until you get:
+   - a layout you like, or
+   - a layout you hate but keep anyway for emotional reasons
 
-### 2. Open the Project in Unity
+### 2. Open the project in Unity
 
-1. Clone or download this repository.
+1. Clone or download the repository.
 2. Open it in **Unity 2022.3+**.
-3. Open the main scene that contains:
-   - The **dungeon generator**,
-   - The **parameter UI**, and
-   - The **camera controller**.
+3. Open the main scene, which contains:
+   - the dungeon generator
+   - the parameter UI
+   - the camera controller
 4. Hit **Play** and experiment:
-   - Switch between **Default** and **Custom** modes.
-   - Try different **Map Types** (Simple / Corridors / BSPRooms).
-   - Break it with weird values, then angrily fix them when the warning animation triggers.
+   - switch between **Default** and **Custom**
+   - try **Simple / Corridors / BSP Rooms**
+   - feed it weird values and see how quickly the warning animation starts judging you
 
 ---
 
-## ⌨️ Controls
+## Controls
 
-- **WASD / Arrow Keys** → Move the camera around the dungeon  
-- **Mouse Wheel** → Zoom in / out (speed scales with zoom level)  
-- **Left Click + Drag** → Pan the camera  
-- Zoom and drag are **disabled when the cursor is over UI**, so you don’t move the map while adjusting sliders and inputs.
+- **WASD / Arrow Keys** → move the camera
+- **Mouse Wheel** → zoom in / out
+- **Left Click + Drag** → pan the camera
 
----
-
-## 📦 Project Status
-
-- 🧱 Dungeon generation → Working  
-- 🧮 Multiple algorithms → Implemented (Random Walk, Corridors, BSP Rooms)  
-- 🎛 Parameter UI → Fully hooked to `ScriptableObject` configs  
-- 🚫 Validation → Prevents generation when inputs are invalid (with warning animation)  
-- 🐞 Bugs → Statistically inevitable  
-- 🔧 Ready to extend → Add your own algorithms, tiles, or full game logic on top
+Zoom and drag are disabled while the cursor is over the UI, so you don’t accidentally drag the map while fighting with sliders.
 
 ---
 
-## 🗂 Project Structure
+## Project status
+
+- dungeon generation: working
+- multiple algorithms: implemented
+- parameter UI: wired to `ScriptableObject` configs
+- validation: prevents generation when inputs are invalid
+- bugs: statistically guaranteed
+- ready to extend: add your own algorithms, tiles, or game logic on top
+
+---
+
+## Project structure
 
 ```text
 Assets/
