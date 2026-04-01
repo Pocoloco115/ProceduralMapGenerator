@@ -132,7 +132,7 @@ public class MapParametersUI : MonoBehaviour
 
         if (corridorLengthInput) { corridorLengthInput.text = so.corridorLength.ToString(); }
         if (corridorCountInput) { corridorCountInput.text = so.corridorCount.ToString(); }
-        if (roomPercentInput) { roomPercentInput.value = Mathf.Clamp01(so.roomPercent); }
+        if (roomPercentInput) { roomPercentInput.value = so.roomPercent / 100; }
         if (corridorWideningModeDropdown) { corridorWideningModeDropdown.value = (int)so.corridorWideningMode; }
 
         if (dungeonWidthInput) { dungeonWidthInput.text = so.dungeonWidth.ToString(); }
@@ -242,7 +242,7 @@ public class MapParametersUI : MonoBehaviour
             }
 
             if (roomPercentInput)
-                roomPercent = Mathf.Clamp01(roomPercentInput.value);
+                roomPercent = roomPercentInput.value / 100;
         }
 
         int dungeonW = customParameters.dungeonWidth;
