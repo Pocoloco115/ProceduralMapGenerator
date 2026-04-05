@@ -1,7 +1,7 @@
 # Procedural Dungeon Generator — roguelite maps in Unity
 
 <div align="center">
-  <img src="Media/gameplay.gif" alt="Game Preview" width="600"/>
+  <img src="Media/gameplay.gif" alt="Game Preview" width="1080"/>
 </div>
 
 <br>
