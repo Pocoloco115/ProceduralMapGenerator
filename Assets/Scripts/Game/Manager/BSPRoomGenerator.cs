@@ -25,7 +25,6 @@ public class BSPRoomGenerator : MapGenerator
                 $"Dungeon=({parameters.dungeonWidth}x{parameters.dungeonHeight}), " +
                 $"MinRoom=({parameters.minRoomWidth}x{parameters.minRoomHeight})"
             );
-            // Evitamos crash: no seguimos
             return;
         }
         HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
