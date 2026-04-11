@@ -1,4 +1,4 @@
-# Procedural Dungeon Generator — roguelite maps in Unity
+# Procedural Dungeon Generator — roguelike maps in Unity
 
 <div align="center">
   <img src="Media/gameplay.gif" alt="Game Preview" width="1080"/>
